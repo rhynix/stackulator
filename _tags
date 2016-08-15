@@ -1,0 +1,35 @@
+# OASIS_START
+# DO NOT EDIT (digest: 56e34bde367a85d135adf8e06487b2e2)
+# Ignore VCS directories, you can use the same kind of rule outside
+# OASIS_START/STOP if you want to exclude directories that contains
+# useless stuff for the build process
+true: annot, bin_annot
+<**/.svn>: -traverse
+<**/.svn>: not_hygienic
+".bzr": -traverse
+".bzr": not_hygienic
+".hg": -traverse
+".hg": not_hygienic
+".git": -traverse
+".git": not_hygienic
+"_darcs": -traverse
+"_darcs": not_hygienic
+# Library stackula
+"src/stackula.cmxs": use_stackula
+# Executable stackula
+"src/main.native": pkg_containers
+"src/main.native": pkg_str
+"src/main.native": use_stackula
+<src/*.ml{,i,y}>: pkg_containers
+<src/*.ml{,i,y}>: pkg_str
+<src/*.ml{,i,y}>: use_stackula
+# Executable test_stackula
+<test/test.{native,byte}>: pkg_containers
+<test/test.{native,byte}>: pkg_oUnit
+<test/test.{native,byte}>: pkg_str
+<test/test.{native,byte}>: use_stackula
+<test/*.ml{,i,y}>: pkg_containers
+<test/*.ml{,i,y}>: pkg_oUnit
+<test/*.ml{,i,y}>: pkg_str
+<test/*.ml{,i,y}>: use_stackula
+# OASIS_STOP
