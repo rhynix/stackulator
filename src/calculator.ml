@@ -26,15 +26,18 @@ let operation = function
   | Parser.Power     -> BinOp Operation.power
   | Parser.Factorial -> UnOp  Operation.factorial
 
-let push_result tail = function
-  | Operation.Result x -> Stack (x :: tail)
+let push_result rest = function
+  | Operation.Result x -> Stack (x :: rest)
   | Operation.Error    -> StackError CalculationError
 
-let operate operation stack = match operation, stack with
-  | BinOp op, Stack (fst :: snd :: tl) -> push_result tl (op snd fst)
-  | UnOp  op, Stack (fst :: tl)        -> push_result tl (op fst)
-  | _,        Stack _                  -> StackError TooFewOperands
-  | _,        StackError error         -> StackError error
+let operate_on_stack operation items = match operation, items with
+  | BinOp op, fst :: snd :: rest -> op snd fst |> push_result rest
+  | UnOp  op, fst :: rest        -> op fst     |> push_result rest
+  | _, _                         -> StackError TooFewOperands
+
+let operate operation = function
+  | Stack items -> operate_on_stack operation items
+  | _ as error  -> error
 
 let push value = function
   | Stack items           -> Stack (value :: items)
