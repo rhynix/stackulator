@@ -8,8 +8,9 @@ let test_parse_whitespace _ctx =
 
 let test_parse_operands _ctx =
   assert_equal
-    (ParseResult [Operand 1.0; Operand 1.0; Operand 0.5; Operand 1.0])
-    (Parser.parse "1 1.0 .5 1.")
+    (ParseResult [Operand 1.0; Operand 1.0; Operand 0.5; Operand 1.0;
+                  Operand (-1.0)])
+    (Parser.parse "1 1.0 .5 1. -1")
 
 let test_parse_operators _ctx =
   assert_equal

@@ -18,7 +18,7 @@ type parse_result =
   | ParseError
 
 let float_regexp =
-  Str.regexp "^\\([0-9]+\\(\\.[0-9]*\\)?\\|\\.[0-9]+\\)$"
+  Str.regexp "^-?\\([0-9]+\\(\\.[0-9]*\\)?\\|\\.[0-9]+\\)$"
 
 let string_is_float str =
   Str.string_match float_regexp str 0
