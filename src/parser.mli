@@ -3,6 +3,7 @@ type operator =
   | Subtract
   | Multiply
   | Divide
+  | Factorial
 
 type token =
   | Operator of operator

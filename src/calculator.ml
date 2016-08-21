@@ -4,25 +4,36 @@ open Fun
 type calculation_error =
   | TooFewOperands
   | TooMuchOperands
+  | CalculationError
 
 type stack =
   | Stack of float list
   | StackError of calculation_error
+
+type operation =
+  | UnOp of (float -> Calculations.result)
+  | BinOp of (float -> float -> Calculations.result)
 
 type result =
   | Result of float
   | Error of calculation_error
 
 let operation = function
-  | Parser.Add      -> ( +. )
-  | Parser.Subtract -> ( -. )
-  | Parser.Multiply -> ( *. )
-  | Parser.Divide   -> ( /. )
+  | Parser.Add       -> BinOp Calculations.add
+  | Parser.Subtract  -> BinOp Calculations.subtract
+  | Parser.Multiply  -> BinOp Calculations.multiply
+  | Parser.Divide    -> BinOp Calculations.divide
+  | Parser.Factorial -> UnOp  Calculations.factorial
 
-let operate operation = function
-  | Stack (fst :: snd :: tl) -> Stack ((operation snd fst) :: tl)
-  | Stack _                  -> StackError TooFewOperands
-  | StackError _ as error    -> error
+let push_result tail = function
+  | Calculations.Result x -> Stack (x :: tail)
+  | Calculations.Error    -> StackError CalculationError
+
+let operate operation stack = match operation, stack with
+  | BinOp op, Stack (fst :: snd :: tl) -> push_result tl (op snd fst)
+  | UnOp  op, Stack (fst :: tl)        -> push_result tl (op fst)
+  | _,        Stack _                  -> StackError TooFewOperands
+  | _,        StackError error         -> StackError error
 
 let push value = function
   | Stack items           -> Stack (value :: items)

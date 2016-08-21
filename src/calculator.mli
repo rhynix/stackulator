@@ -1,6 +1,7 @@
 type calculation_error =
   | TooFewOperands
   | TooMuchOperands
+  | CalculationError
 
 type result =
   | Result of float
