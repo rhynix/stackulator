@@ -11,24 +11,24 @@ type stack =
   | StackError of calculation_error
 
 type operation =
-  | UnOp of (float -> Calculations.result)
-  | BinOp of (float -> float -> Calculations.result)
+  | UnOp of (float -> Operation.result)
+  | BinOp of (float -> float -> Operation.result)
 
 type result =
   | Result of float
   | Error of calculation_error
 
 let operation = function
-  | Parser.Add       -> BinOp Calculations.add
-  | Parser.Subtract  -> BinOp Calculations.subtract
-  | Parser.Multiply  -> BinOp Calculations.multiply
-  | Parser.Divide    -> BinOp Calculations.divide
-  | Parser.Power     -> BinOp Calculations.power
-  | Parser.Factorial -> UnOp  Calculations.factorial
+  | Parser.Add       -> BinOp Operation.add
+  | Parser.Subtract  -> BinOp Operation.subtract
+  | Parser.Multiply  -> BinOp Operation.multiply
+  | Parser.Divide    -> BinOp Operation.divide
+  | Parser.Power     -> BinOp Operation.power
+  | Parser.Factorial -> UnOp  Operation.factorial
 
 let push_result tail = function
-  | Calculations.Result x -> Stack (x :: tail)
-  | Calculations.Error    -> StackError CalculationError
+  | Operation.Result x -> Stack (x :: tail)
+  | Operation.Error    -> StackError CalculationError
 
 let operate operation stack = match operation, stack with
   | BinOp op, Stack (fst :: snd :: tl) -> push_result tl (op snd fst)
