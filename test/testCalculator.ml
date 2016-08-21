@@ -27,6 +27,11 @@ let test_factorial _ctx =
     (Result 120.0)
     (Calculator.calculate [Operand 5.0; Operator Factorial])
 
+let test_power _ctx =
+  assert_equal
+    (Result 81.0)
+    (Calculator.calculate [Operand 3.0; Operand 4.0; Operator Power])
+
 let test_stack_too_few_operands _ctx =
   assert_equal
     (Error TooFewOperands)
@@ -44,5 +49,6 @@ let suite =
     ; "multiplication">::    test_multiply
     ; "division">::          test_divide
     ; "factorial">::         test_factorial
+    ; "power">::             test_power
     ; "too few operands">::  test_stack_too_few_operands
     ; "too much operands">:: test_stack_too_much_operands ]

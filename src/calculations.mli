@@ -7,3 +7,4 @@ val add : float -> float -> result
 val subtract : float -> float -> result
 val multiply : float -> float -> result
 val divide : float -> float -> result
+val power : float -> float -> result

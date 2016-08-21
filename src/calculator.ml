@@ -23,6 +23,7 @@ let operation = function
   | Parser.Subtract  -> BinOp Calculations.subtract
   | Parser.Multiply  -> BinOp Calculations.multiply
   | Parser.Divide    -> BinOp Calculations.divide
+  | Parser.Power     -> BinOp Calculations.power
   | Parser.Factorial -> UnOp  Calculations.factorial
 
 let push_result tail = function

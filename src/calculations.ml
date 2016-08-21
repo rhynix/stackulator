@@ -9,7 +9,8 @@ let factorial n =
     | n            -> Error in
   int_of_float n |> factorial_of_int 1
 
-let add x y = Result (x +. y)
+let add      x y = Result (x +. y)
 let subtract x y = Result (x -. y)
 let multiply x y = Result (x *. y)
-let divide x y = Result (x /. y)
+let divide   x y = Result (x /. y)
+let power    x y = Result (x ** y)

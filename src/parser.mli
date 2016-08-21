@@ -4,6 +4,7 @@ type operator =
   | Multiply
   | Divide
   | Factorial
+  | Power
 
 type token =
   | Operator of operator

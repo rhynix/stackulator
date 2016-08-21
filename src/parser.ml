@@ -7,6 +7,7 @@ type operator =
   | Multiply
   | Divide
   | Factorial
+  | Power
 
 type token =
   | Operator of operator
@@ -28,6 +29,7 @@ let operator = function
   | "*" -> Some (Operator Multiply)
   | "/" -> Some (Operator Divide)
   | "!" -> Some (Operator Factorial)
+  | "^" -> Some (Operator Power)
   | _   -> None
 
 let tokenize str =

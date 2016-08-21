@@ -14,8 +14,8 @@ let test_parse_operands _ctx =
 let test_parse_operators _ctx =
   assert_equal
     (ParseResult [Operator Add; Operator Subtract; Operator Multiply;
-                  Operator Divide; Operator Factorial])
-    (Parser.parse "+ - * / !")
+                  Operator Divide; Operator Factorial; Operator Power])
+    (Parser.parse "+ - * / ! ^")
 
 let test_parse_error _ctx =
   assert_equal ParseError (Parser.parse "1 2 &")

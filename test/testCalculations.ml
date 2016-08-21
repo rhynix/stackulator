@@ -24,6 +24,9 @@ let test_multiply _ctx =
 let test_divide _ctx =
   assert_equal (Calculations.Result 3.0) (Calculations.divide 9.0 3.0)
 
+let test_power _ctx =
+  assert_equal (Calculations.Result 81.0) (Calculations.power 3.0 4.0)
+
 let suite =
   "Calculations">:::
     [ "Factorial positive">:: test_factorial_positive
@@ -33,4 +36,5 @@ let suite =
     ; "Add">::                test_add
     ; "Subtract">::           test_subtract
     ; "Multiply">::           test_multiply
-    ; "Divide">::             test_divide ]
+    ; "Divide">::             test_divide
+    ; "Power">::              test_power ]
