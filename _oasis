@@ -6,7 +6,6 @@ Authors:      Rik Tonnard
 License:      MIT
 BuildTools:   ocamlbuild
 Plugins:      META (0.4), DevFiles (0.4)
-BuildDepends: containers
 
 Library stackula
   Path:         src
