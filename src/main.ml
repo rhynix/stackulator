@@ -29,7 +29,7 @@ let terminate () =
 let () =
   Sys.catch_break true;
   try
-    repl 0.0 ()
+    repl nan ()
   with
     | End_of_file -> terminate ()
     | Sys.Break   -> terminate ()
