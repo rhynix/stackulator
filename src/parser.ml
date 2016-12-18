@@ -1,6 +1,3 @@
-open Containers
-open Fun
-
 type token =
   | Operator of Operation.operator
   | Operand  of float
@@ -45,8 +42,9 @@ let to_result maybe_tokens =
   | true  -> Ok (List.map Option.get_exn maybe_tokens)
   | false -> Error ()
 
-let parse =
-  Str.split (Str.regexp " ")
-  %> List.filter (fun x -> x <> "")
-  %> List.map tokenize
-  %> to_result
+let parse str =
+  str
+  |> Str.split (Str.regexp " ")
+  |> List.filter (fun x -> x <> "")
+  |> List.map tokenize
+  |> to_result

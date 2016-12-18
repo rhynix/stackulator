@@ -1,5 +1,3 @@
-open Containers
-
 let calculate last parser_tokens =
   match parser_tokens |> Calculator.prepare last |> Calculator.calculate with
   | Ok result -> Ok result
@@ -17,7 +15,7 @@ let rec repl last_result () =
   | Error error -> handle_error last_result error
 
 and handle_result result =
-  print_endline (Float.to_string result);
+  print_endline (string_of_float result);
   repl result ()
 
 and handle_error last_result error =
@@ -35,4 +33,3 @@ let () =
   with
     | End_of_file -> terminate ()
     | Sys.Break   -> terminate ()
-

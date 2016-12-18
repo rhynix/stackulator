@@ -4,6 +4,7 @@ let suite =
   "suite">:::
     [ TestParser.suite
     ; TestCalculator.suite
-    ; TestOperation.suite ]
+    ; TestOperation.suite
+    ; TestOption.suite ]
 
 let () = run_test_tt_main suite

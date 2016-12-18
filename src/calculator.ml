@@ -1,6 +1,3 @@
-open Containers
-open Fun
-
 type token =
   | Operator of Operation.operator
   | Operand of float
@@ -50,6 +47,9 @@ let prepare last_result parser_tokens =
   List.map (prepare_parser_token last_result) parser_tokens
 
 let calculate_to_stack =
-  List.fold_left (flip handle_token) (Stack [])
+  List.fold_left (fun stack token -> handle_token token stack) (Stack [])
 
-let calculate = calculate_to_stack %> stack_to_result
+let calculate tokens =
+  tokens
+  |> calculate_to_stack
+  |> stack_to_result
