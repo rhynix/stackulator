@@ -30,7 +30,7 @@ let push value = function
 
 let handle_token = function
   | Operand  value    -> push value
-  | Operator operator -> operate (Operation.operation operator)
+  | Operator operator -> operate (Operation.operation_for_operator operator)
 
 let stack_to_result = function
   | Stack [item]     -> Ok item

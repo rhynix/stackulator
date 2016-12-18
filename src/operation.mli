@@ -10,7 +10,7 @@ type operation =
   | UnOp of (float -> (float, unit) result)
   | BinOp of (float -> float -> (float, unit) result)
 
-val operation : operator -> operation
+val operation_for_operator : operator -> operation
 
 val factorial : float -> (float, unit) result
 val add :       float -> float -> (float, unit) result

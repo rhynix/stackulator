@@ -23,7 +23,7 @@ let multiply x y = Ok (x *. y)
 let divide   x y = Ok (x /. y)
 let power    x y = Ok (x ** y)
 
-let operation = function
+let operation_for_operator = function
   | Add       -> BinOp add
   | Subtract  -> BinOp subtract
   | Multiply  -> BinOp multiply
