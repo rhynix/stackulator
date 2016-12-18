@@ -7,14 +7,13 @@ type calculation_error =
   | TooMuchOperands
   | CalculationError
 
-let push_result rest = function
-  | Ok x    -> Ok (x :: rest)
-  | Error _ -> Error CalculationError
+let push_result result stack =
+  Result.map_or_error (fun value -> value :: stack) CalculationError result
 
 let operate_on_stack operation items = match operation, items with
-  | Operation.BinOp op, fst :: snd :: rest -> op snd fst |> push_result rest
-  | Operation.UnOp  op, fst :: rest        -> op fst     |> push_result rest
-  | _, _                                   -> Error TooFewOperands
+  | Operation.BinOp op, fst :: snd :: stack -> push_result (op snd fst) stack
+  | Operation.UnOp  op, fst :: stack        -> push_result (op fst)     stack
+  | _, _                                    -> Error TooFewOperands
 
 let operate operation stack =
   Result.flat_map (operate_on_stack operation) stack
