@@ -1,6 +1,10 @@
 open Containers
 open Fun
 
+type token =
+  | Operator of Operation.operator
+  | Operand of float
+
 type calculation_error =
   | TooFewOperands
   | TooMuchOperands
@@ -10,30 +14,18 @@ type stack =
   | Stack of float list
   | StackError of calculation_error
 
-type operation =
-  | UnOp of (float -> Operation.result)
-  | BinOp of (float -> float -> Operation.result)
-
 type result =
   | Result of float
   | Error of calculation_error
-
-let operation = function
-  | Parser.Add       -> BinOp Operation.add
-  | Parser.Subtract  -> BinOp Operation.subtract
-  | Parser.Multiply  -> BinOp Operation.multiply
-  | Parser.Divide    -> BinOp Operation.divide
-  | Parser.Power     -> BinOp Operation.power
-  | Parser.Factorial -> UnOp  Operation.factorial
 
 let push_result rest = function
   | Operation.Result x -> Stack (x :: rest)
   | Operation.Error    -> StackError CalculationError
 
 let operate_on_stack operation items = match operation, items with
-  | BinOp op, fst :: snd :: rest -> op snd fst |> push_result rest
-  | UnOp  op, fst :: rest        -> op fst     |> push_result rest
-  | _, _                         -> StackError TooFewOperands
+  | Operation.BinOp op, fst :: snd :: rest -> op snd fst |> push_result rest
+  | Operation.UnOp  op, fst :: rest        -> op fst     |> push_result rest
+  | _, _                                   -> StackError TooFewOperands
 
 let operate operation = function
   | Stack items -> operate_on_stack operation items
@@ -44,14 +36,22 @@ let push value = function
   | StackError _ as error -> error
 
 let handle_token = function
-  | Parser.Operand  value    -> push value
-  | Parser.Operator operator -> operate (operation operator)
+  | Operand  value    -> push value
+  | Operator operator -> operate (Operation.operation operator)
 
 let stack_to_result = function
   | Stack [item]     -> Result item
   | Stack []         -> Error TooFewOperands
   | Stack _          -> Error TooMuchOperands
   | StackError error -> Error error
+
+let prepare_parser_token last_result = function
+  | Parser.Operator operator -> Operator operator
+  | Parser.Operand operand   -> Operand operand
+  | Parser.Underscore        -> Operand last_result
+
+let prepare last_result parser_tokens =
+  List.map (prepare_parser_token last_result) parser_tokens
 
 let calculate_to_stack =
   List.fold_left (flip handle_token) (Stack [])

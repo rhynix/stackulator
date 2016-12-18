@@ -3,8 +3,13 @@ type calculation_error =
   | TooMuchOperands
   | CalculationError
 
+type token =
+  | Operator of Operation.operator
+  | Operand of float
+
 type result =
   | Result of float
   | Error of calculation_error
 
-val calculate : Parser.token list -> result
+val prepare : float -> Parser.token list -> token list
+val calculate : token list -> result

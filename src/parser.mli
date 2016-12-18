@@ -1,14 +1,7 @@
-type operator =
-  | Add
-  | Subtract
-  | Multiply
-  | Divide
-  | Factorial
-  | Power
-
 type token =
-  | Operator of operator
-  | Operand of float
+  | Operator of Operation.operator
+  | Operand  of float
+  | Underscore
 
 type parse_result =
   | ParseResult of token list

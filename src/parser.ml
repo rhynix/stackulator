@@ -1,17 +1,10 @@
 open Containers
 open Fun
 
-type operator =
-  | Add
-  | Subtract
-  | Multiply
-  | Divide
-  | Factorial
-  | Power
-
 type token =
-  | Operator of operator
-  | Operand of float
+  | Operator of Operation.operator
+  | Operand  of float
+  | Underscore
 
 type parse_result =
   | ParseResult of token list
@@ -29,12 +22,12 @@ let operand str =
   | false -> None
 
 let operator = function
-  | "+" -> Some (Operator Add)
-  | "-" -> Some (Operator Subtract)
-  | "*" -> Some (Operator Multiply)
-  | "/" -> Some (Operator Divide)
-  | "!" -> Some (Operator Factorial)
-  | "^" -> Some (Operator Power)
+  | "+" -> Some (Operator Operation.Add)
+  | "-" -> Some (Operator Operation.Subtract)
+  | "*" -> Some (Operator Operation.Multiply)
+  | "/" -> Some (Operator Operation.Divide)
+  | "!" -> Some (Operator Operation.Factorial)
+  | "^" -> Some (Operator Operation.Power)
   | _   -> None
 
 let underscore result = function

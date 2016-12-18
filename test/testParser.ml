@@ -1,5 +1,6 @@
 open OUnit2
 open Parser
+open Operation
 
 let test_parse_whitespace _ctx =
   assert_equal

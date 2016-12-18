@@ -4,14 +4,14 @@ type final_result =
   | Ok    of float
   | Error of string
 
-let calculate tokens =
-  match Calculator.calculate tokens with
+let calculate last parser_tokens =
+  match parser_tokens |> Calculator.prepare last |> Calculator.calculate with
   | Calculator.Result result -> Ok    result
   | Calculator.Error _       -> Error "CalculationError"
 
-let parse_and_calculate_lane last_result () =
+let parse_and_calculate_line last_result () =
   match read_line () |> Parser.parse last_result with
-  | Parser.ParseResult tokens -> calculate tokens
+  | Parser.ParseResult tokens -> calculate last_result tokens
   | Parser.ParseError         -> Error "ParseError"
 
 let rec repl last_result () =
