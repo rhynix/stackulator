@@ -6,10 +6,6 @@ type token =
   | Operand  of float
   | Underscore
 
-type parse_result =
-  | ParseResult of token list
-  | ParseError
-
 let float_regexp =
   Str.regexp "^-?\\([0-9]+\\(\\.[0-9]*\\)?\\|\\.[0-9]+\\)$"
 
@@ -46,8 +42,8 @@ let tokenize str =
 
 let to_result maybe_tokens =
   match List.for_all Option.is_some maybe_tokens with
-  | true  -> ParseResult (List.map Option.get_exn maybe_tokens)
-  | false -> ParseError
+  | true  -> Ok (List.map Option.get_exn maybe_tokens)
+  | false -> Error ()
 
 let parse =
   Str.split (Str.regexp " ")

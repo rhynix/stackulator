@@ -14,13 +14,9 @@ type stack =
   | Stack of float list
   | StackError of calculation_error
 
-type result =
-  | Result of float
-  | Error of calculation_error
-
 let push_result rest = function
-  | Operation.Result x -> Stack (x :: rest)
-  | Operation.Error    -> StackError CalculationError
+  | Ok x    -> Stack (x :: rest)
+  | Error _ -> StackError CalculationError
 
 let operate_on_stack operation items = match operation, items with
   | Operation.BinOp op, fst :: snd :: rest -> op snd fst |> push_result rest
@@ -40,7 +36,7 @@ let handle_token = function
   | Operator operator -> operate (Operation.operation operator)
 
 let stack_to_result = function
-  | Stack [item]     -> Result item
+  | Stack [item]     -> Ok item
   | Stack []         -> Error TooFewOperands
   | Stack _          -> Error TooMuchOperands
   | StackError error -> Error error

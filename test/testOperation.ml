@@ -1,31 +1,31 @@
 open OUnit2
 
 let test_factorial_positive _ctx =
-  assert_equal (Operation.Result 120.0) (Operation.factorial 5.0)
+  assert_equal (Ok 120.0) (Operation.factorial 5.0)
 
 let test_factorial_partial _ctx =
-  assert_equal (Operation.Result 120.0) (Operation.factorial 5.9)
+  assert_equal (Ok 120.0) (Operation.factorial 5.9)
 
 let test_factorial_zero _ctx =
-  assert_equal (Operation.Result 1.0) (Operation.factorial 0.0)
+  assert_equal (Ok 1.0) (Operation.factorial 0.0)
 
 let test_factorial_negative _ctx =
-  assert_equal Operation.Error (Operation.factorial (-1.0))
+  assert_equal (Error ()) (Operation.factorial (-1.0))
 
 let test_add _ctx =
-  assert_equal (Operation.Result 6.0) (Operation.add 3.0 3.0)
+  assert_equal (Ok 6.0) (Operation.add 3.0 3.0)
 
 let test_subtract _ctx =
-  assert_equal (Operation.Result 3.0) (Operation.subtract 6.0 3.0)
+  assert_equal (Ok 3.0) (Operation.subtract 6.0 3.0)
 
 let test_multiply _ctx =
-  assert_equal (Operation.Result 9.0) (Operation.multiply 3.0 3.0)
+  assert_equal (Ok 9.0) (Operation.multiply 3.0 3.0)
 
 let test_divide _ctx =
-  assert_equal (Operation.Result 3.0) (Operation.divide 9.0 3.0)
+  assert_equal (Ok 3.0) (Operation.divide 9.0 3.0)
 
 let test_power _ctx =
-  assert_equal (Operation.Result 81.0) (Operation.power 3.0 4.0)
+  assert_equal (Ok 81.0) (Operation.power 3.0 4.0)
 
 let suite =
   "Operation">:::

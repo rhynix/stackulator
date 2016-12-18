@@ -4,42 +4,42 @@ open Operation
 
 let test_add _ctx =
   assert_equal
-    (Calculator.Result 3.0)
+    (Ok 3.0)
     (Calculator.calculate [Operand 2.0; Operand 1.0; Operator Add])
 
 let test_subtract _ctx =
   assert_equal
-    (Calculator.Result 3.0)
+    (Ok 3.0)
     (Calculator.calculate [Operand 5.0; Operand 2.0; Operator Subtract])
 
 let test_multiply _ctx =
   assert_equal
-    (Calculator.Result 6.0)
+    (Ok 6.0)
     (Calculator.calculate [Operand 3.0; Operand 2.0; Operator Multiply])
 
 let test_divide _ctx =
   assert_equal
-    (Calculator.Result 4.0)
+    (Ok 4.0)
     (Calculator.calculate [Operand 8.0; Operand 2.0; Operator Divide])
 
 let test_factorial _ctx =
   assert_equal
-    (Calculator.Result 120.0)
+    (Ok 120.0)
     (Calculator.calculate [Operand 5.0; Operator Factorial])
 
 let test_power _ctx =
   assert_equal
-    (Calculator.Result 81.0)
+    (Ok 81.0)
     (Calculator.calculate [Operand 3.0; Operand 4.0; Operator Power])
 
 let test_stack_too_few_operands _ctx =
   assert_equal
-    (Calculator.Error TooFewOperands)
+    (Error TooFewOperands)
     (Calculator.calculate [Operand 2.0; Operator Add])
 
 let test_stack_too_much_operands _ctx =
   assert_equal
-    (Calculator.Error TooMuchOperands)
+    (Error TooMuchOperands)
     (Calculator.calculate [Operand 2.0; Operand 2.0; Operand 2.0; Operator Add])
 
 let test_prepare _ctx =

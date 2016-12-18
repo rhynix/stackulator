@@ -7,9 +7,5 @@ type token =
   | Operator of Operation.operator
   | Operand of float
 
-type result =
-  | Result of float
-  | Error of calculation_error
-
 val prepare : float -> Parser.token list -> token list
-val calculate : token list -> result
+val calculate : token list -> (float, calculation_error) result

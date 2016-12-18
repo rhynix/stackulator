@@ -1,18 +1,14 @@
 open Containers
 
-type final_result =
-  | Ok    of float
-  | Error of string
-
 let calculate last parser_tokens =
   match parser_tokens |> Calculator.prepare last |> Calculator.calculate with
-  | Calculator.Result result -> Ok    result
-  | Calculator.Error _       -> Error "CalculationError"
+  | Ok result -> Ok result
+  | Error _   -> Error "CalculationError"
 
 let parse_and_calculate_line last_result () =
   match read_line () |> Parser.parse with
-  | Parser.ParseResult tokens -> calculate last_result tokens
-  | Parser.ParseError         -> Error "ParseError"
+  | Ok tokens -> calculate last_result tokens
+  | Error _   -> Error "ParseError"
 
 let rec repl last_result () =
   print_string "> ";
