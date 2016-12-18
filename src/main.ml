@@ -10,7 +10,7 @@ let calculate last parser_tokens =
   | Calculator.Error _       -> Error "CalculationError"
 
 let parse_and_calculate_line last_result () =
-  match read_line () |> Parser.parse last_result with
+  match read_line () |> Parser.parse with
   | Parser.ParseResult tokens -> calculate last_result tokens
   | Parser.ParseError         -> Error "ParseError"
 

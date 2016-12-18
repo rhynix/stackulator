@@ -7,4 +7,4 @@ type parse_result =
   | ParseResult of token list
   | ParseError
 
-val parse : float -> string -> parse_result
+val parse : string -> parse_result

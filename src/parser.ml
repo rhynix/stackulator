@@ -30,8 +30,8 @@ let operator = function
   | "^" -> Some (Operator Operation.Power)
   | _   -> None
 
-let underscore result = function
-  | "_" -> Some (Operand result)
+let underscore = function
+  | "_" -> Some Underscore
   | _   -> None
 
 let rec try_parse_token str = function
@@ -41,16 +41,16 @@ let rec try_parse_token str = function
     | None       -> try_parse_token str parsers)
   | _ -> None
 
-let tokenize underscore_result str =
-  try_parse_token str [underscore underscore_result; operator; operand]
+let tokenize str =
+  try_parse_token str [underscore; operator; operand]
 
 let to_result maybe_tokens =
   match List.for_all Option.is_some maybe_tokens with
   | true  -> ParseResult (List.map Option.get_exn maybe_tokens)
   | false -> ParseError
 
-let parse underscore_result =
+let parse =
   Str.split (Str.regexp " ")
   %> List.filter (fun x -> x <> "")
-  %> List.map (tokenize underscore_result)
+  %> List.map tokenize
   %> to_result
