@@ -8,7 +8,9 @@ type calculation_error =
   | CalculationError
 
 let push_result result stack =
-  Result.map_or_error (fun value -> value :: stack) CalculationError result
+  result
+  |> Result.map (fun value -> value :: stack)
+  |> Result.map_error (fun _ -> CalculationError)
 
 let operate_on_stack operation items = match operation, items with
   | Operation.BinOp op, fst :: snd :: stack -> push_result (op snd fst) stack

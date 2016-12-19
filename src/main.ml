@@ -1,22 +1,24 @@
 let calculate last parser_tokens =
-  match parser_tokens |> Calculator.prepare last |> Calculator.calculate with
-  | Ok result -> Ok result
-  | Error _   -> Error "CalculationError"
+  parser_tokens
+  |> Calculator.prepare last
+  |> Calculator.calculate
+  |> Result.map_error (fun _ -> "CalculationError")
 
 let parse_and_calculate_line last_result () =
-  match read_line () |> Parser.parse with
-  | Ok tokens -> calculate last_result tokens
-  | Error _   -> Error "ParseError"
+  read_line ()
+  |> Parser.parse
+  |> Result.map_error (fun _ -> "ParseError")
+  |> Result.flat_map (calculate last_result)
 
 let rec repl last_result () =
   print_string "> ";
   match parse_and_calculate_line last_result () with
-  | Ok result   -> handle_result result
-  | Error error -> handle_error last_result error
+  | Ok value  -> handle_result value
+  | Error err -> handle_error last_result err
 
-and handle_result result =
-  print_endline (string_of_float result);
-  repl result ()
+and handle_result value =
+  print_endline (string_of_float value);
+  repl value ()
 
 and handle_error last_result error =
   print_endline error;
