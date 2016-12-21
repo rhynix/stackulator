@@ -9,3 +9,7 @@ let flat_map f = function
 let map_error f = function
   | Ok value  -> Ok value
   | Error err -> Error (f err)
+
+let flat_map_error f = function
+  | Ok value  -> Ok value
+  | Error err -> f err

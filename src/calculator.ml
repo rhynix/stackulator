@@ -28,10 +28,9 @@ let handle_token = function
   | Operator operator -> operate (Operation.operation_for_operator operator)
 
 let stack_to_result = function
-  | Ok [item] -> Ok item
-  | Ok []     -> Error TooFewOperands
-  | Ok _      -> Error TooMuchOperands
-  | Error err -> Error err
+  | [item] -> Ok item
+  | []     -> Error TooFewOperands
+  | _      -> Error TooMuchOperands
 
 let prepare_parser_token last_result = function
   | Parser.Operator operator -> Operator operator
@@ -47,4 +46,4 @@ let calculate_to_stack =
 let calculate tokens =
   tokens
   |> calculate_to_stack
-  |> stack_to_result
+  |> Result.flat_map stack_to_result

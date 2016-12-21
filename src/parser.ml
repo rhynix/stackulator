@@ -27,15 +27,11 @@ let underscore = function
   | "_" -> Some Underscore
   | _   -> None
 
-let rec try_parse_token str = function
-  | p :: parsers -> (
-    match p str with
-    | Some token -> Some token
-    | None       -> try_parse_token str parsers)
-  | _ -> None
+let parsers = [underscore; operator; operand]
 
-let tokenize str =
-  try_parse_token str [underscore; operator; operand]
+let rec tokenize parsers str = match parsers with
+  | p :: rest -> p str |> Option.flat_map_none (fun () -> tokenize rest str)
+  | _         -> None
 
 let to_result maybe_tokens =
   match List.for_all Option.is_some maybe_tokens with
@@ -46,5 +42,5 @@ let parse str =
   str
   |> Str.split (Str.regexp " ")
   |> List.filter (fun x -> x <> "")
-  |> List.map tokenize
+  |> List.map (tokenize parsers)
   |> to_result
