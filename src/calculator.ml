@@ -2,15 +2,15 @@ type token =
   | Operator of Operation.operator
   | Operand of float
 
-type calculation_error =
+type error =
   | TooFewOperands
-  | TooMuchOperands
-  | CalculationError
+  | TooManyOperands
+  | OperationError of Operation.error
 
 let push_result result stack =
   result
   |> Result.map (fun value -> value :: stack)
-  |> Result.map_error (fun _ -> CalculationError)
+  |> Result.map_error (fun err -> OperationError err)
 
 let operate_on_stack operation items = match operation, items with
   | Operation.BinOp op, fst :: snd :: stack -> push_result (op snd fst) stack
@@ -30,7 +30,7 @@ let handle_token = function
 let stack_to_result = function
   | [item] -> Ok item
   | []     -> Error TooFewOperands
-  | _      -> Error TooMuchOperands
+  | _      -> Error TooManyOperands
 
 let prepare_parser_token last_result = function
   | Parser.Operator operator -> Operator operator
@@ -47,3 +47,8 @@ let calculate tokens =
   tokens
   |> calculate_to_stack
   |> Result.flat_map stack_to_result
+
+let show_error = function
+  | TooFewOperands     -> "Too few operands"
+  | TooManyOperands    -> "Too many operands"
+  | OperationError err -> Operation.show_error err

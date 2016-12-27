@@ -39,7 +39,7 @@ let test_stack_too_few_operands _ctx =
 
 let test_stack_too_much_operands _ctx =
   assert_equal
-    (Error TooMuchOperands)
+    (Error TooManyOperands)
     (Calculator.calculate [Operand 2.0; Operand 2.0; Operand 2.0; Operator Add])
 
 let test_prepare _ctx =

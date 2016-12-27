@@ -10,7 +10,7 @@ let test_factorial_zero _ctx =
   assert_equal (Ok 1.0) (Operation.factorial 0.0)
 
 let test_factorial_negative _ctx =
-  assert_equal (Error ()) (Operation.factorial (-1.0))
+  assert_equal (Error Operation.NegativeFactorial) (Operation.factorial (-1.0))
 
 let test_add _ctx =
   assert_equal (Ok 6.0) (Operation.add 3.0 3.0)
