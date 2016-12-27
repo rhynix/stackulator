@@ -1,5 +1,5 @@
 OASISFormat:  0.4
-Name:         stackula
+Name:         stackulator
 Version:      0.1
 Synopsis:     A reverse polish notation calculator
 Authors:      Rik Tonnard
@@ -7,27 +7,27 @@ License:      MIT
 BuildTools:   ocamlbuild
 Plugins:      META (0.4), DevFiles (0.4)
 
-Library stackula
+Library stackulator
   Path:         src
   Modules:      Parser, Calculator
   BuildDepends: str
 
-Executable stackula
+Executable stackulator
   Path:           src
   BuildTools:     ocamlbuild
   MainIs:         main.ml
   CompiledObject: native
-  BuildDepends:   stackula
+  BuildDepends:   stackulator
 
-Executable test_stackula
+Executable test_stackulator
   Path:           test
   MainIs:         test.ml
   Install:        false
   BuildTools:     ocamlbuild
   CompiledObject: best
-  BuildDepends:   stackula, oUnit
+  BuildDepends:   stackulator, oUnit
 
-Test test_stackula
-  TestTools:        test_stackula
-  Command:          $test_stackula
+Test test_stackulator
+  TestTools:        test_stackulator
+  Command:          $test_stackulator
   WorkingDirectory: test
