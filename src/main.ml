@@ -2,13 +2,13 @@ type error =
   | CalculateError of Calculator.error
   | ParseError of Parser.error
 
-let show_error = function
-  | CalculateError err -> "CalculateError: " ^ (Calculator.show_error err)
-  | ParseError err     -> "ParseError: " ^ (Parser.show_error err)
-
 type state = {
   last_result : float;
 }
+
+let show_error = function
+  | CalculateError err -> "CalculateError: " ^ (Calculator.show_error err)
+  | ParseError err     -> "ParseError: " ^ (Parser.show_error err)
 
 let calculate last parser_tokens =
   parser_tokens
