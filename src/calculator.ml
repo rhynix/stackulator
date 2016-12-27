@@ -17,11 +17,11 @@ let operate_on_stack operation items = match operation, items with
   | Operation.UnOp  op, fst :: stack        -> push_result (op fst)     stack
   | _, _                                    -> Error TooFewOperands
 
-let operate operation stack =
-  Result.flat_map (operate_on_stack operation) stack
+let operate operation stack_result =
+  Result.flat_map (operate_on_stack operation) stack_result
 
-let push value stack =
-  Result.map (List.cons value) stack
+let push value stack_result =
+  Result.map (List.cons value) stack_result
 
 let handle_token = function
   | Operand  value    -> push value
@@ -40,12 +40,14 @@ let prepare_parser_token last_result = function
 let prepare last_result parser_tokens =
   List.map (prepare_parser_token last_result) parser_tokens
 
-let calculate_to_stack =
-  List.fold_left (fun stack token -> handle_token token stack) (Ok [])
+let calculate_to_stack_result tokens =
+  List.fold_left (fun stack_result token ->
+    handle_token token stack_result
+  ) (Ok []) tokens
 
 let calculate tokens =
   tokens
-  |> calculate_to_stack
+  |> calculate_to_stack_result
   |> Result.flat_map stack_to_result
 
 let show_error = function
