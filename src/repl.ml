@@ -11,9 +11,12 @@ let terminate config state =
 let rec run_single config state =
   match LNoise.linenoise (config.prompt state) with
   | None       -> terminate config state
-  | Some input -> config.handle input state |> run_single config
+  | Some input -> (
+    LNoise.history_add input |> ignore;
+    config.handle input state |> run_single config)
 
 let rec run config state =
+  LNoise.history_set ~max_length:100;
   Sys.catch_break true;
   try
     run_single config state
