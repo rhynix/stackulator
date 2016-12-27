@@ -3,6 +3,9 @@ type token =
   | Operand  of float
   | Underscore
 
+type error =
+  | UnknownToken of string
+
 let float_regexp =
   Str.regexp "^-?\\([0-9]+\\(\\.[0-9]*\\)?\\|\\.[0-9]+\\)$"
 
@@ -29,18 +32,24 @@ let underscore = function
 
 let parsers = [underscore; operator; operand]
 
-let rec tokenize parsers str = match parsers with
-  | p :: rest -> p str |> Option.flat_map_none (fun () -> tokenize rest str)
+let rec try_tokenize str = function
+  | p :: rest -> p str |> Option.flat_map_none (fun () -> try_tokenize str rest)
   | _         -> None
 
-let to_result maybe_tokens =
-  match List.for_all Option.is_some maybe_tokens with
-  | true  -> Ok (List.map Option.get_exn maybe_tokens)
-  | false -> Error ()
+let tokenize str =
+  try_tokenize str parsers |> Result.of_option (UnknownToken str)
+
+let to_result tokens =
+  match List.for_all Result.is_ok tokens with
+  | true  -> Ok (List.map Result.get_exn tokens)
+  | false -> Error (List.find Result.is_error tokens |> Result.get_error_exn)
 
 let parse str =
   str
   |> Str.split (Str.regexp " ")
   |> List.filter (fun x -> x <> "")
-  |> List.map (tokenize parsers)
+  |> List.map tokenize
   |> to_result
+
+let show_error = function
+  | UnknownToken token -> "Unknown token " ^ token

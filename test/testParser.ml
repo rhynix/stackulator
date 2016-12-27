@@ -24,7 +24,7 @@ let test_parse_underscore _ctx =
     (Parser.parse "_")
 
 let test_parse_error _ctx =
-  assert_equal (Error ()) (Parser.parse "1 2 &")
+  assert_equal (Error (UnknownToken "&")) (Parser.parse "1 2 &")
 
 let suite =
   "suite">:::

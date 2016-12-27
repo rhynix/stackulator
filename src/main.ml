@@ -1,10 +1,10 @@
 type error =
   | CalculateError of Calculator.error
-  | ParseError
+  | ParseError of Parser.error
 
 let show_error = function
   | CalculateError err -> "CalculateError: " ^ (Calculator.show_error err)
-  | ParseError         -> "ParseError"
+  | ParseError err     -> "ParseError: " ^ (Parser.show_error err)
 
 let calculate last parser_tokens =
   parser_tokens
@@ -15,7 +15,7 @@ let calculate last parser_tokens =
 let parse_and_calculate_line last_result () =
   read_line ()
   |> Parser.parse
-  |> Result.map_error (fun _ -> ParseError)
+  |> Result.map_error (fun err -> ParseError err)
   |> Result.flat_map (calculate last_result)
 
 let rec repl last_result () =

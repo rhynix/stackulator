@@ -3,4 +3,8 @@ type token =
   | Operand  of float
   | Underscore
 
-val parse : string -> (token list, unit) result
+type error =
+  | UnknownToken of string
+
+val parse : string -> (token list, error) result
+val show_error : error -> string
