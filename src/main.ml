@@ -36,7 +36,6 @@ let handle input state =
   | Error err -> handle_error state err
 
 let terminate _ =
-  print_newline ();
   print_endline "Quiting..."
 
 let prompt _ =

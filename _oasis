@@ -10,7 +10,7 @@ Plugins:      META (0.4), DevFiles (0.4)
 Library stackulator
   Path:         src
   Modules:      Parser, Calculator
-  BuildDepends: str
+  BuildDepends: str, linenoise
 
 Executable stackulator
   Path:           src

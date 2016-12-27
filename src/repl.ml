@@ -4,14 +4,19 @@ type 's config = {
   prompt    : 's -> string;
 }
 
-let run_single config state =
-  print_string (config.prompt state);
-  config.handle (read_line ()) state
+let terminate config state =
+  config.terminate state;
+  exit 0
+
+let rec run_single config state =
+  match LNoise.linenoise (config.prompt state) with
+  | None       -> terminate config state
+  | Some input -> config.handle input state |> run_single config
 
 let rec run config state =
   Sys.catch_break true;
   try
-    run_single config state |> run config
+    run_single config state
   with
     | End_of_file -> (config.terminate state)
     | Sys.Break   -> (config.terminate state)
