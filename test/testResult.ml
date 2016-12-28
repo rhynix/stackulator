@@ -40,16 +40,16 @@ let tests = [
     assert_equal (Error ()) (Result.map ((+) 1) (Error ())));
 
   "flat_map with ok, returning ok" >:: (fun _ ->
-    assert_equal (Ok 2) (Result.flat_map (fun x -> (Ok 2)) (Ok 1)));
+    assert_equal (Ok 2) (Result.flat_map (fun x -> Ok (x + 1)) (Ok 1)));
 
   "flat_map with error, returning ok" >:: (fun _ ->
-    assert_equal (Error ()) (Result.flat_map (fun x -> (Ok 2)) (Error ())));
+    assert_equal (Error ()) (Result.flat_map (fun x -> Ok (x + 1)) (Error ())));
 
   "flat_map with ok, returning error" >:: (fun _ ->
-    assert_equal (Error ()) (Result.flat_map (fun x -> Error ()) (Ok 1)));
+    assert_equal (Error 2) (Result.flat_map (fun x -> Error (x + 1)) (Ok 1)));
 
   "flat_map with error, returning error" >:: (fun _ ->
-    assert_equal (Error 1) (Result.flat_map (fun x -> Error 2) (Error 1)));
+    assert_equal (Error 1) (Result.flat_map (fun x -> Error (x + 1)) (Error 1)));
 
   "map_error with ok" >:: (fun _ ->
     assert_equal (Ok 1) (Result.map_error ((+) 1) (Ok 1)));
@@ -58,14 +58,14 @@ let tests = [
     assert_equal (Error 2) (Result.map_error ((+) 1) (Error 1)));
 
   "flat_map_error with ok, returning ok" >:: (fun _ ->
-    assert_equal (Ok 1) (Result.flat_map_error (fun x -> (Ok 2)) (Ok 1)));
+    assert_equal (Ok 1) (Result.flat_map_error (fun x -> Ok (x + 1)) (Ok 1)));
 
   "flat_map_error with error, returning ok" >:: (fun _ ->
-    assert_equal (Ok 2) (Result.flat_map_error (fun x -> (Ok 2)) (Error 1)));
+    assert_equal (Ok 2) (Result.flat_map_error (fun x -> Ok (x + 1)) (Error 1)));
 
   "flat_map_error with ok, returning error" >:: (fun _ ->
-    assert_equal (Ok 1) (Result.flat_map_error (fun x -> Error ()) (Ok 1)));
+    assert_equal (Ok 1) (Result.flat_map_error (fun x -> Error (x + 1)) (Ok 1)));
 
   "flat_map_error with error, returning error" >:: (fun _ ->
-    assert_equal (Error 2) (Result.flat_map_error (fun x -> Error 2) (Error 1)));
+    assert_equal (Error 2) (Result.flat_map_error (fun x -> Error (x + 1)) (Error 1)));
 ]
