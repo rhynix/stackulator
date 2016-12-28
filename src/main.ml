@@ -12,7 +12,7 @@ let show_error = function
 
 let calculate last parser_tokens =
   parser_tokens
-  |> Calculator.prepare last
+  |> Calculator.prepare_tokens last
   |> Calculator.calculate
   |> Result.map_error (fun err -> CalculateError err)
 

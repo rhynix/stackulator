@@ -32,14 +32,6 @@ let stack_to_result = function
   | []     -> Error TooFewOperands
   | _      -> Error TooManyOperands
 
-let prepare_parser_token last_result = function
-  | Parser.Operator operator -> Operator operator
-  | Parser.Operand operand   -> Operand operand
-  | Parser.Underscore        -> Operand last_result
-
-let prepare last_result parser_tokens =
-  List.map (prepare_parser_token last_result) parser_tokens
-
 let calculate_to_stack_result tokens =
   List.fold_left (fun stack_result token ->
     handle_token token stack_result
@@ -49,6 +41,14 @@ let calculate tokens =
   tokens
   |> calculate_to_stack_result
   |> Result.flat_map stack_to_result
+
+let prepare_parser_token last_result = function
+  | Parser.Operator operator -> Operator operator
+  | Parser.Operand operand   -> Operand operand
+  | Parser.Underscore        -> Operand last_result
+
+let prepare_tokens last_result parser_tokens =
+  List.map (prepare_parser_token last_result) parser_tokens
 
 let show_error = function
   | TooFewOperands     -> "Too few operands"

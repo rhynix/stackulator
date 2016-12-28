@@ -43,8 +43,9 @@ let tests = [
       (Error TooManyOperands)
       (calculate [Operand 2.0; Operand 2.0;]));
 
-  "prepare" >:: (fun _ ->
+  "prepare_tokens" >:: (fun _ ->
+    let tokens = [Parser.Operand 3.0; Parser.Underscore; Parser.Operator Add] in
     assert_equal
       [Operand 3.0; Operand 2.0; Operator Add]
-      (prepare 2.0 [Parser.Operand 3.0; Parser.Underscore; Parser.Operator Add]));
+      (prepare_tokens 2.0 tokens));
 ]
